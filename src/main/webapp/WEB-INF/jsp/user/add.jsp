@@ -17,7 +17,6 @@
         昵称： <form:input path="nikeName"/><form:errors path="nikeName"/>    </br>
         密码： <form:input path="password"/><form:errors path="password"/>   </br>
         邮箱： <form:input path="email"/> <form:errors path="email"/>      </br>
-
         <input type="submit" value="提交"/>
     </form:form>
 </body>
