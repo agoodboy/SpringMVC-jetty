@@ -3,11 +3,13 @@ package cn.czqiang.mvc;
 import cn.czqiang.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,7 +45,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(User user) {
+    public String add(@Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "user/add";
+        }
         users.put(user.getName(), user);
         System.out.println("add用户");
         return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/user/users";
@@ -64,7 +69,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "{name}/update", method = RequestMethod.POST)
-    public String update(@PathVariable String name, User user) {
+    public String update(@PathVariable String name, @Valid User user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "user/update";
+        }
         users.put(name, user);
         return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/user/users";
     }
