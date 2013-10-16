@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="IntelliJ-jetty:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="IntelliJ-jetty.war">
+      <element id="artifact" artifact-name="IntelliJ-jetty:war exploded" />
+    </root>
+  </artifact>
+</component>
