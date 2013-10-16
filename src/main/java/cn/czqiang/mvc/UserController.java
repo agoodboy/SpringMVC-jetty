@@ -3,7 +3,10 @@ package cn.czqiang.mvc;
 import cn.czqiang.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,5 +33,45 @@ public class UserController {
     public String list(Model model) {
         model.addAttribute("users", users);
         return "user/list";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    public String add(Model model) {
+        model.addAttribute(new User());
+        System.out.println("add用户页面");
+        return "user/add";
+    }
+
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String add(User user) {
+        users.put(user.getName(), user);
+        System.out.println("add用户");
+        return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/user/users";
+    }
+
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public String show(@PathVariable String name, Model model) {
+        System.out.println(name);
+        model.addAttribute(users.get(name));
+        return "user/show";
+    }
+
+    @RequestMapping(value = "{name}/update")
+    public String update(@PathVariable String name, Model model) {
+        model.addAttribute(users.get(name));
+        System.out.println("update页面");
+        return "user/update";
+    }
+
+    @RequestMapping(value = "{name}/update", method = RequestMethod.POST)
+    public String update(@PathVariable String name, User user) {
+        users.put(name, user);
+        return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/user/users";
+    }
+
+    @RequestMapping(value = "{name}/delete")
+    public String delete(@PathVariable String name) {
+        users.remove(name);
+        return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/user/users";
     }
 }

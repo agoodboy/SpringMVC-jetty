@@ -13,8 +13,12 @@
     <title>用户列表</title>
 </head>
 <body>
+<a href="add">添加用户</a></br>
     <c:forEach items="${users}" var="user">
-        ${user.value.name}---${user.value.nikeName}---${user.value.password}---${user.value.email} </br>
+       <a href="${user.value.name}">${user.value.name}</a>---${user.value.nikeName}---${user.value.password}---${user.value.email}
+        <a href="${user.value.name}/update">修改</a>
+        <a href="${user.value.name}/delete">删除</a>
+        </br>
     </c:forEach>
 </body>
 </html>
