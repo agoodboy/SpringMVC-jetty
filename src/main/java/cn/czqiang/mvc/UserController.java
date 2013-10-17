@@ -2,11 +2,11 @@ package cn.czqiang.mvc;
 
 import cn.czqiang.entity.User;
 import cn.czqiang.exception.UserException;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import javax.servlet.http.HttpServletRequest;
@@ -113,5 +113,13 @@ public class UserController {
     public String handlerException(Exception ex, HttpServletRequest request) {
         request.setAttribute("ex", ex);
         return "error";
+    }
+
+    @RequestMapping(value = "redir")
+    public String redir(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("redir", "直接传值");
+//        redirectAttributes.addAttribute("redir", "直接传值");
+        //model.addAttribute("redir", "直接传值");
+        return "redirect:/user/users";
     }
 }

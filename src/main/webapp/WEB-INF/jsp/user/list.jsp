@@ -13,7 +13,7 @@
     <title>用户列表</title>
 </head>
 <body>
-<a href="add">添加用户</a>—》<strong>${loginUser.nikeName}</strong>已登录 <a href="#"> 退出 </a></br>
+<a href="add">添加用户</a>—》<strong>${loginUser.nikeName}</strong>已登录  ==${redir}     <br>
     <c:forEach items="${users}" var="user">
        <a href="${user.value.name}">${user.value.name}</a>---${user.value.nikeName}---${user.value.password}---${user.value.email}
         <a href="${user.value.name}/update">修改</a>
