@@ -2,15 +2,19 @@ package cn.czqiang.mvc;
 
 import cn.czqiang.entity.User;
 import cn.czqiang.exception.UserException;
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import sun.java2d.cmm.CMSManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -47,10 +51,18 @@ public class UserController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(@Valid User user, BindingResult bindingResult) {
+    public String add(@Valid User user, BindingResult bindingResult, MultipartFile uploadFile, HttpServletRequest request) throws IOException{
         if (bindingResult.hasErrors()) {
             return "user/add";
         }
+
+        // ====文件上传功能====
+        String realpath = request.getSession().getServletContext().getRealPath("resources/upload");
+        System.out.println(uploadFile.getContentType() + " ," + uploadFile.getName() + " ," + uploadFile.getOriginalFilename());
+        System.out.println(realpath);
+        FileUtils.copyInputStreamToFile(uploadFile.getInputStream(), new File(realpath + "/" + uploadFile.getOriginalFilename()));
+        // ====文件上传功能====
+
         users.put(user.getName(), user);
         System.out.println("add用户");
         return InternalResourceViewResolver.REDIRECT_URL_PREFIX + "/user/users";
@@ -86,13 +98,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(){
+    public String login() {
         System.out.println("login页面");
         return "user/login";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String login(String name, String password,Model model) {
+    public String login(String name, String password, Model model) {
         if (!users.containsKey(name)) {
             throw new UserException("姓名不存在！");
         }
@@ -104,7 +116,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "logout")
-    public String logout(){
+    public String logout() {
         return "redirect:/user/users";
 
     }
@@ -118,8 +130,10 @@ public class UserController {
     @RequestMapping(value = "redir")
     public String redir(RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("redir", "直接传值");
-//        redirectAttributes.addAttribute("redir", "直接传值");
+        //        redirectAttributes.addAttribute("redir", "直接传值");
         //model.addAttribute("redir", "直接传值");
         return "redirect:/user/users";
     }
+
+    // TODO 1.添加数据库支持 2.文件上传功能
 }

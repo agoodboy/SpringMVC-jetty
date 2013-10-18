@@ -9,6 +9,16 @@
     <mvc:annotation-driven/>
     <context:component-scan base-package="cn.czqiang.mvc"></context:component-scan>
 
+    <!-- 过滤资源 -->
+    <mvc:resources mapping="/resources/" location="/resources/**"></mvc:resources>
+
+    <!-- 文件上传Resolver 开始-->
+    <bean id="multipartResolver"  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 最大文件大小 -->
+        <property name="maxUploadSize"><value>1048576</value></property>
+    </bean>
+    <!-- 文件上传Resolver 结束-->
+
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
         <property name="prefix" value="/WEB-INF/jsp/"></property>
